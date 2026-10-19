@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Glass Pavilion · Ashworth &amp; Vane — Prime Residential</title>
+  <meta name="description" content="An architectural masterpiece in the Surrey Hills. A private viewing by Ashworth & Vane." />
+
+  <!-- Premium fonts: serif headings + clean sans body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="src/style.css?v=13" />
+</head>
+<body>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">ASHWORTH <span>&amp;</span> VANE</div>
+    <nav class="topnav">
+      <a href="#story">The Estate</a>
+      <a href="#anatomy">Interiors</a>
+      <a href="#spec">Specification</a>
+      <a href="#viewing" class="nav-cta">Private Viewing</a>
+    </nav>
+  </header>
+
+  <!-- 1 · HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-pin">
+      <canvas class="hero-canvas"></canvas>
+      <div class="hero-veil"></div>
+      <div class="hero-content">
+        <p class="eyebrow reveal-up">Surrey Hills · England</p>
+        <h1 class="hero-title">
+          <span class="line">The Glass</span>
+          <span class="line">Pavilion</span>
+        </h1>
+        <p class="hero-sub reveal-up">A cinematic architectural residence — eight acres of stillness, framed in glass.</p>
+      </div>
+
+      <!-- Scroll-synced room captions (fade in/out as the camera moves through the house) -->
+      <div class="hero-caption" data-cap="living">
+        <p class="cap-num">01 · The Living Volume</p>
+        <p class="cap-spec">≈ 75 m² principal salon · book-matched stone fireplace, hand-built Italian seating, and floor-to-ceiling glass framing the valley.</p>
+      </div>
+      <div class="hero-caption" data-cap="kitchen">
+        <p class="cap-num">02 · The Kitchen</p>
+        <p class="cap-spec">≈ 40 m² · a single block of book-matched marble, handleless oak joinery, and fully integrated Gaggenau appliances.</p>
+      </div>
+
+      <div class="scroll-cue reveal-up"><span></span>scroll</div>
+    </div>
+  </section>
+
+  <!-- 2 · STORY / ORIGIN -->
+  <section class="story" id="story">
+    <div class="story-bg" data-parallax>
+      <img src="public/images/av-bg-landscape.jpg" alt="The estate landscape" />
+    </div>
+    <div class="story-inner">
+      <p class="eyebrow">The Approach</p>
+      <h2 class="split-lines big">Arrival is the first<br/>act of luxury.</h2>
+      <p class="body split-lines">A quarter-mile private drive unfolds through mature parkland before the
+        house ever appears — a deliberate pause, engineered so that the first sight of the Pavilion
+        lands like the opening frame of a film.</p>
+    </div>
+    <figure class="story-figure" data-parallax-img>
+      <img src="public/images/av-02-approach-gate.jpg" alt="The private approach" />
+      <figcaption>The private approach · golden hour</figcaption>
+    </figure>
+  </section>
+
+  <!-- 3 · ANATOMY / INTERIORS (pinned scroll journey) -->
+  <section class="anatomy" id="anatomy">
+    <div class="anatomy-pin">
+      <div class="anatomy-track">
+
+        <article class="room">
+          <div class="room-img"><img src="public/images/av-03-entrance-door.jpg" alt="The entrance" /></div>
+          <div class="room-text">
+            <p class="num">01</p>
+            <h3>The Threshold</h3>
+            <p>A three-metre pivot door opens to a floating oak stair and a wash of warm light.</p>
+          </div>
+        </article>
+
+        <article class="room">
+          <div class="room-img"><img src="public/images/av-04-living-room.jpg" alt="The living space" /></div>
+          <div class="room-text">
+            <p class="num">02</p>
+            <h3>The Living Volume</h3>
+            <p>Floor-to-ceiling glass dissolves the wall between the salon and the valley beyond.</p>
+          </div>
+        </article>
+
+        <article class="room">
+          <div class="room-img"><img src="public/images/av-05-kitchen.jpg" alt="The kitchen" /></div>
+          <div class="room-text">
+            <p class="num">03</p>
+            <h3>The Kitchen</h3>
+            <p>A single block of book-matched marble, handleless and quiet, lit from within.</p>
+          </div>
+        </article>
+
+        <article class="room">
+          <div class="room-img"><img src="public/images/av-06-master-suite.jpg" alt="The master suite" /></div>
+          <div class="room-text">
+            <p class="num">04</p>
+            <h3>The Principal Suite</h3>
+            <p>A calm platform of oak and stone, framed for the slow blue minutes after sunset.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · THE REVEAL (full-bleed climax) -->
+  <section class="reveal" id="reveal">
+    <img src="public/images/av-07-view-reveal.jpg" alt="The view" class="reveal-img" data-parallax-img />
+    <div class="reveal-text">
+      <h2 class="split-lines big light">And then,<br/>the view.</h2>
+    </div>
+  </section>
+
+  <!-- 5 · RITUAL / LIFESTYLE -->
+  <section class="ritual" id="ritual">
+    <figure class="ritual-tall" data-parallax-img>
+      <img src="public/images/av-09-staircase.jpg" alt="Sculptural staircase" />
+    </figure>
+    <div class="ritual-stack">
+      <figure data-parallax-img><img src="public/images/av-08-pool-dusk.jpg" alt="Infinity pool at dusk" /></figure>
+      <div class="ritual-copy">
+        <p class="eyebrow">The Day's End</p>
+        <h2 class="split-lines">Where evenings<br/>become rituals.</h2>
+        <p class="body split-lines">A heated infinity edge meets the horizon. Beyond it, nothing but the
+          Surrey Hills exhaling into dusk.</p>
+      </div>
+      <figure data-parallax-img><img src="public/images/av-11-lifestyle-couple.jpg" alt="Terrace living" /></figure>
+    </div>
+  </section>
+
+  <!-- 6 · SPECIFICATION / COLLECTION -->
+  <section class="spec" id="spec">
+    <div class="spec-bg" data-parallax><img src="public/images/av-10-material-macro.jpg" alt="Material detail" /></div>
+    <div class="spec-inner">
+      <p class="eyebrow">The Specification</p>
+      <h2 class="split-lines big">Every measure,<br/>considered.</h2>
+      <div class="spec-grid">
+        <div class="spec-item"><span class="reveal-num">6</span><p>Bedroom suites</p></div>
+        <div class="spec-item"><span class="reveal-num">7</span><p>Bathrooms</p></div>
+        <div class="spec-item"><span class="reveal-num">12,000</span><p>Sq ft internal</p></div>
+        <div class="spec-item"><span class="reveal-num">8</span><p>Acres of grounds</p></div>
+      </div>
+      <p class="price reveal-up">Guide price · <strong>£14,500,000</strong></p>
+    </div>
+  </section>
+
+  <!-- 7 · CTA / VIEWING -->
+  <section class="viewing" id="viewing">
+    <div class="viewing-inner">
+      <p class="eyebrow">By Appointment</p>
+      <h2 class="split-lines big light">Arrange a<br/>private viewing.</h2>
+      <form class="viewing-form" onsubmit="event.preventDefault(); this.querySelector('.form-done').style.display='block';">
+        <input type="text" placeholder="Full name" required />
+        <input type="email" placeholder="Email address" required />
+        <button type="submit">Request Appointment</button>
+        <p class="form-done">Thank you — a member of the team will be in touch within 24 hours.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="brand big">ASHWORTH <span>&amp;</span> VANE</div>
+    <p>Prime Residential · Mayfair, London</p>
+    <p class="fine">A demonstration experience · concept &amp; build by David Santos</p>
+  </footer>
+
+  <!-- Libraries via CDN (no install needed) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
+  <script src="src/main.js?v=14"></script>
+</body>
+</html>

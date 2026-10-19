@@ -1,0 +1,8 @@
+# Local tooling / generated artifacts
+node_modules/
+__pycache__/
+*.py[cod]
+.DS_Store
+*.log
+.browser-smoke-profile-*/
+.browser-fallback-profile-*/

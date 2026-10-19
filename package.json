@@ -1,0 +1,19 @@
+{
+  "name": "glass-pavilion-reconstruction",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static, fidelity-first reconstruction of the recovered Glass Pavilion experience.",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "dev": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check src/main.js && node --test tests/*.test.mjs",
+    "browser:smoke": "node scripts/browser-smoke.mjs",
+    "browser:fallback": "node scripts/browser-fallback-smoke.mjs",
+    "assets:fetch": "python3 scripts/fetch-assets.py"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
