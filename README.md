@@ -31,6 +31,35 @@ npm run browser:fallback
 
 The browser tests cover desktop/mobile rendering, hero frame scrubbing, horizontal interior movement, reduced motion, the demo viewing form, local assets/fonts, runtime errors, horizontal overflow and the static poster fallback when GSAP/ScrollTrigger are unavailable. Browser scripts write screenshots to `/home/kali/evidence/`, outside the Git working tree.
 
+## Vercel deployment
+
+The repository is configured as a framework-free static deployment. `vercel.json` sets the Build Command to `npm run build` and the Output Directory to `dist`; no database or environment variables are required for the current experience.
+
+Before deployment, run:
+
+```sh
+npm run check
+npm run check:deployment
+```
+
+The static build copies only the runtime page, active `src/`, collected `public/` assets and `vendor/` libraries/fonts to `dist/`. It leaves source references, docs, tests, recovered baselines and the asset manifest out of the public output. The generated `dist/` directory is ignored by Git.
+
+To preview the exact build output locally:
+
+```sh
+npm run build
+SERVE_DIST=1 PORT=4174 npm run start
+```
+
+Open `http://127.0.0.1:4174`. In another terminal, verify the built output in Chromium:
+
+```sh
+SITE_URL=http://127.0.0.1:4174 npm run browser:smoke
+SITE_URL=http://127.0.0.1:4174 npm run browser:fallback
+```
+
+In Vercel, import the repository and keep the Root Directory at the repository root. The checked-in `vercel.json` configures the framework preset, build command, output directory and response headers. No extra environment variables are needed. Use a Preview Deployment first, inspect the deployed URL on desktop and mobile, then promote/merge according to the desired production branch and Vercel project settings.
+
 ## Project map
 
 - `index.html` — live page, brand metadata, visible copy, and page structure.

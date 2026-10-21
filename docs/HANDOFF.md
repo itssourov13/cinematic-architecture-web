@@ -54,6 +54,16 @@ npm run browser:fallback
 
 These cover desktop/mobile scroll behaviour, reduced motion, local assets/fonts, the form's honest demo state, runtime exceptions, horizontal overflow, and operation without GSAP/ScrollTrigger. Review `docs/VERIFICATION.md` for the latest dated results; do not reuse old test counts as new results without rerunning the checks.
 
+## Vercel static deployment
+
+- `vercel.json` pins Vercel to the framework-free static configuration, `npm run build` and output directory `dist`.
+- `scripts/build-static.mjs` creates a clean output containing only `index.html`, `public/`, `src/` and `vendor/`.
+- `scripts/deployment-smoke.mjs` checks runtime references, local CSS/font paths, all 12 JPEGs, all 302 hero frames and exclusion of repository-only files.
+- `dist/` is generated and ignored by Git; do not commit it.
+- Run `npm run check` and `npm run check:deployment` before deployment.
+- Preview the exact production artifact with `npm run build` followed by `SERVE_DIST=1 PORT=4174 npm run start`; run browser checks against that server using `SITE_URL=http://127.0.0.1:4174`.
+- No environment variables or database are required by the current static page. Preview deployment is not the same as verifying the production domain.
+
 ## Change boundaries
 
 Do not alter these during brand/copy work:

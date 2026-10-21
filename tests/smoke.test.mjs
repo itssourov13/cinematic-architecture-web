@@ -36,6 +36,25 @@ test('Kaven & Rowe brand and copy metadata are coherent', () => {
   assert.match(pkg.description, /Kaven & Rowe/);
 });
 
+test('Vercel is configured to deploy the explicit static build output', () => {
+  const config = JSON.parse(read('vercel.json'));
+  const pkg = JSON.parse(read('package.json'));
+  assert.equal(config.framework, null);
+  assert.equal(config.buildCommand, 'npm run build');
+  assert.equal(config.outputDirectory, 'dist');
+  assert.ok(config.headers.some((rule) =>
+    rule.source === '/(.*)' && rule.headers.some((header) =>
+      header.key === 'X-Content-Type-Options' && header.value === 'nosniff')));
+  assert.ok(config.headers.some((rule) =>
+    rule.source === '/src/(.*)' && rule.headers.some((header) =>
+      header.key === 'Cache-Control' && header.value.includes('must-revalidate'))));
+  assert.equal(pkg.scripts.build, 'node scripts/build-static.mjs');
+  assert.equal(pkg.scripts['check:deployment'], 'npm run build && node scripts/deployment-smoke.mjs');
+  assert.ok(read('.gitignore').includes('dist/'));
+  assert.ok(existsSync(resolve(root, 'scripts/build-static.mjs')));
+  assert.ok(existsSync(resolve(root, 'scripts/deployment-smoke.mjs')));
+});
+
 test('referenced local media paths resolve from their correct base directories', () => {
   const html = read('index.html');
   const css = read('src/style.css');
