@@ -1,44 +1,48 @@
-# T2 — Final Verification
+# Verification Record — The Glass Pavilion / Kaven & Rowe
 
-Verified: 2026-10-19 (UTC)  
-Project: `/home/kali/web_atk/3D-web/source-code/T2`
+**Updated:** 2026-10-21
+**Workspace:** `/home/kali/gpt-workspace/cinematic-architecture-web`
+**Branch:** `feat/kaven-rowe-brand-copy`
 
-## Result
+## Latest result
 
-The recovered static site is runnable locally and the automated checks below pass. The recovered page and media are retained alongside a production-oriented static implementation. No deployment or commit was performed.
+All checks run after the brand and copy refresh passed.
 
-## Test results
+| Check | Result | Evidence |
+|---|---|---|
+| `npm run check` | **13 passed, 0 failed** | JavaScript syntax, navigation, brand/copy contract, local references, asset integrity and recovered baseline hashes |
+| `npm run browser:smoke` | **Passed** | Desktop 1440×1000, mobile 390×844, normal motion, reduced motion, form demo state and scroll interactions |
+| `npm run browser:fallback` | **Passed** | GSAP and ScrollTrigger intentionally blocked; static poster and readable content retained |
+| `git diff --check` | Passed | No whitespace errors (checked during final review) |
 
-- `npm run check`: **12 passed, 0 failed**.
-- Desktop browser smoke at **1440 × 1000**: passed.
-- Mobile browser smoke at **390 × 844**: passed.
-- Reduced-motion run: passed; Lenis is inactive and the four-room interior sequence becomes a vertically readable layout.
-- Dependency-fallback run: passed with GSAP and ScrollTrigger intentionally blocked; the static hero poster, all 11 content images, and readable room sequence remain available without JavaScript exceptions.
-- HTTP/server checks: passed for page and asset GETs, HEAD, missing path, POST rejection, traversal rejection, MIME types, and baseline security headers.
-- Runtime network check: **no external script/font/media requests** in the normal local browser run; no failed local assets, HTTP asset errors, console errors, or uncaught exceptions.
-- Appointment-form check: the demo status is accessible and no non-read/write request is sent.
+### Browser details
 
-## Asset integrity
+- The page title resolves to `The Glass Pavilion | Kaven & Rowe — Private Residences`; the primary heading remains **The Glass Pavilion**.
+- Desktop and mobile document widths matched the viewport (1440/1440 and 390/390). The four-room horizontal sequence behaved as expected in the normal run; all four rooms became vertically readable in reduced-motion and fallback modes.
+- All 11 content images observed by the browser loaded; no broken images, failed local requests, unexpected external runtime resources, JavaScript exceptions or console errors were reported.
+- The self-hosted Cormorant Garamond and Jost font faces loaded.
+- Reduced-motion preference was honoured and Lenis was inactive.
+- The viewing form still displays its explicit demo-only message and does not send or persist form data.
 
-The refreshed collection contains **314/314 successful assets**: 12 original-named photographs/backgrounds plus 302 hero frames. The TSV manifest contains each collected output's size, MIME type and SHA-256; all manifest rows match the files on disk.
+## Preservation checks
 
-- All 302 frames are 1280 × 716.
-- Eleven stills are 1376 × 768; the staircase image intentionally retains its portrait 768 × 1376 dimension.
-- The asset re-fetch uses the image proxy at quality 85. The proxy re-encodes image data; therefore hashes represent the collected files and are **not** byte-for-byte origin hashes. Dimensions and asset naming/path references were verified, and a desktop live/local visual spot-check showed close visual matching.
-- Live and local screenshots are stored in the parent workspace's `evidence/` directory (`T2_live_desktop.png`, `T2_browser_desktop.png`, `T2_browser_mobile.png`, `T2_browser_dependency_fallback.png`).
+The static suite passed the checks for the 314-entry asset manifest, all 302 WebP frames, all 12 JPEG files/dimensions, frame resolution, bounded frame-cache invariants, and the SHA-256 values of the preserved recovered baselines. The brand change did not alter media paths or files, the asset manifest, CSS, motion implementation or recovered baseline files.
 
-## Baseline preservation
+Expected scope of the source change: `index.html`, `package.json`, `scripts/serve.mjs`, `tests/smoke.test.mjs`, `README.md`, `docs/HANDOFF.md`, this record and `docs/BRAND-AND-COPY.md`.
 
-Original recovered copies are retained in `recovered/` and their audited SHA-256 values pass:
+Browser smoke scripts wrote verification screenshots to `/home/kali/evidence/`; these are test artifacts outside the Git working tree, not changes to the project's media collection.
+
+## Known boundaries
+
+- No production deployment was attempted or verified in this run.
+- The viewing form is a front-end demonstration; it does not submit or persist names/emails.
+- The **Kaven & Rowe** name is a working concept identity. Public-web screening did not surface a clear same-name real-estate brand in the sampled results, but no formal company-registry or trademark clearance was performed. See `BRAND-AND-COPY.md`.
+- These checks confirm behaviour and integrity; they do not constitute a fresh pixel-by-pixel comparison against the original live site.
+
+## Recovered baseline hashes
+
+The original recovered files remain preserved and their automated SHA-256 checks pass:
 
 - `recovered/index.html`: `07227b7422598ee83c3c7db061aff5b1cb35bba681f77424776c3a893a3d7796`
 - `recovered/main.js`: `d7fd794dd3c1eecdceb285cef99fa85d71f01e75debf444abdc91ca884571d39`
 - `recovered/style.css`: `a327d9c8ec92b467d1cc4ac39235c5943632a3c7b4d1597f96a7bb254f9c08ee`
-
-## Deployment status and remaining functional integration
-
-The project is packaged for a static deployment: local JavaScript libraries and Latin font files are vendored, `vercel.json` parses as valid JSON, and `npm run start` serves the site without dependency installation. The Vercel configuration was inspected locally, **not deployed to or verified on a live Vercel deployment**.
-
-The appointment form deliberately remains a front-end demonstration: it does not send or persist names/emails. Connect a real, secure backend before using it for actual viewing requests. No build pipeline is required for the current static HTML/CSS/JS implementation.
-
-The local verification servers were stopped after testing.

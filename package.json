@@ -1,8 +1,8 @@
 {
-  "name": "glass-pavilion-reconstruction",
+  "name": "kaven-rowe-glass-pavilion",
   "version": "1.0.0",
   "private": true,
-  "description": "Static, fidelity-first reconstruction of the recovered Glass Pavilion experience.",
+  "description": "Cinematic architectural property experience for the Kaven & Rowe concept brand.",
   "type": "module",
   "scripts": {
     "start": "node scripts/serve.mjs",

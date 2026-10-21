@@ -23,6 +23,19 @@ test('in-page navigation points to existing sections', () => {
   assert.deepEqual(anchors.filter((id) => !ids.has(id)), []);
 });
 
+test('Kaven & Rowe brand and copy metadata are coherent', () => {
+  const html = read('index.html');
+  const pkg = JSON.parse(read('package.json'));
+  assert.ok(html.includes('<title>The Glass Pavilion | Kaven &amp; Rowe — Private Residences</title>'));
+  assert.ok(html.includes('demonstration-only viewing form.'));
+  assert.equal(html.split('KAVEN <span>&amp;</span> ROWE').length - 1, 2);
+  assert.equal(html.includes('ASHWORTH'), false);
+  assert.ok(html.includes('A contemporary residence shaped by light, landscape'));
+  assert.ok(html.includes('Your details are not sent and no appointment has been requested'));
+  assert.equal(pkg.name, 'kaven-rowe-glass-pavilion');
+  assert.match(pkg.description, /Kaven & Rowe/);
+});
+
 test('referenced local media paths resolve from their correct base directories', () => {
   const html = read('index.html');
   const css = read('src/style.css');
