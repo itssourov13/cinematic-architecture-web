@@ -1,0 +1,95 @@
+/* Isolated startup overlay; the existing site stylesheet and visuals are untouched. */
+#kaven-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #0a0a0b;
+  color: #ece7df;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 360ms ease, visibility 360ms ease;
+}
+
+#kaven-preloader[hidden] {
+  display: none;
+}
+
+#kaven-preloader.is-leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.kaven-preloader__inner {
+  width: min(100%, 300px);
+  text-align: center;
+}
+
+.kaven-preloader__wordmark {
+  margin-bottom: 42px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.08rem;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  white-space: nowrap;
+}
+
+.kaven-preloader__wordmark span {
+  color: #c9a96a;
+}
+
+.kaven-preloader__message {
+  min-height: 1.2em;
+  margin: 0 0 18px;
+  color: #9a9389;
+  font-family: "Jost", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.kaven-preloader__track {
+  width: 100%;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(236, 231, 223, 0.16);
+}
+
+.kaven-preloader__bar {
+  width: 0;
+  height: 100%;
+  background: #c9a96a;
+  transform-origin: left center;
+  transition: width 120ms linear;
+}
+
+.kaven-preloader__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 13px;
+  color: #9a9389;
+  font-family: "Jost", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.62rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+#kaven-preloader__percent {
+  min-width: 3ch;
+  color: #ece7df;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #kaven-preloader,
+  .kaven-preloader__bar {
+    transition-duration: 0.01ms;
+  }
+}

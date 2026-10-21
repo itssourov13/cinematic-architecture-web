@@ -28,7 +28,7 @@ test('Kaven & Rowe brand and copy metadata are coherent', () => {
   const pkg = JSON.parse(read('package.json'));
   assert.ok(html.includes('<title>The Glass Pavilion | Kaven &amp; Rowe — Private Residences</title>'));
   assert.ok(html.includes('demonstration-only viewing form.'));
-  assert.equal(html.split('KAVEN <span>&amp;</span> ROWE').length - 1, 2);
+  assert.equal(html.split('KAVEN <span>&amp;</span> ROWE').length - 1, 3); // header, footer and temporary preload overlay
   assert.equal(html.includes('ASHWORTH'), false);
   assert.ok(html.includes('A contemporary residence shaped by light, landscape'));
   assert.ok(html.includes('Your details are not sent and no appointment has been requested'));

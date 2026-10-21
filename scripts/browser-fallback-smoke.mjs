@@ -110,6 +110,32 @@ try {
   const result = evaluated.result.value;
   const shot = await command('Page.captureScreenshot', { format: 'png', fromSurface: true, captureBeyondViewport: false });
   writeFileSync(resolve(root, '..', '..', 'evidence', 'T2_browser_dependency_fallback.png'), Buffer.from(shot.data, 'base64'));
+
+  // In the static layout, emulate the visitor reaching each deferred image so lazy assets are tested end-to-end.
+  const deferredImages = await command('Runtime.evaluate', {
+    expression: `(async () => {
+      const images = [...document.images];
+      for (const image of images) {
+        if (!image.complete || !image.naturalWidth) {
+          const loaded = new Promise(resolve => {
+            const settle = () => resolve();
+            image.addEventListener('load', settle, { once: true });
+            image.addEventListener('error', settle, { once: true });
+          });
+          image.scrollIntoView({ block: 'center', behavior: 'instant' });
+          await Promise.race([loaded, new Promise(resolve => setTimeout(resolve, 2500))]);
+        }
+      }
+      return {
+        loadedImages: images.filter(image => image.complete && image.naturalWidth > 0).length,
+        brokenImages: images.filter(image => image.complete && !image.naturalWidth).map(image => image.getAttribute('src'))
+      };
+    })()`,
+    awaitPromise: true,
+    returnByValue: true,
+  });
+  Object.assign(result, deferredImages.result.value);
+
   const failures = [];
   if (!result.title.includes('The Glass Pavilion')) failures.push('wrong page title');
   if (result.gsapPresent || result.scrollTriggerPresent) failures.push('blocked animation libraries unexpectedly loaded');

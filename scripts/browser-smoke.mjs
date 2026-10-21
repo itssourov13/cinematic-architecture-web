@@ -150,7 +150,13 @@ try {
           titleRect:title ? rect(title) : null,
           lineMetrics:lines.map(el=>({text:el.textContent,rect:rect(el),scrollHeight:el.scrollHeight,clientHeight:el.clientHeight})),
           interiorTrack:track ? {scrollWidth:track.scrollWidth,viewport:innerWidth,rooms:track.querySelectorAll('.room').length} : null,
-          formMessage:document.querySelector('.form-done')?.innerText || ''
+          formMessage:document.querySelector('.form-done')?.innerText || '',
+          startup: {
+            overlayPresent:Boolean(document.getElementById('kaven-preloader')),
+            readyClass:document.documentElement.classList.contains('kaven-preload-ready'),
+            posterCached:Boolean(window.KavenPreloader?.getPoster()),
+            state:window.KavenPreloader?.getState() ?? null
+          }
         };
       })()`,
       awaitPromise: true,
@@ -206,6 +212,31 @@ try {
     returnByValue: true,
   });
   const scrollCheck = scrollCheckResponse.result.value;
+  const lazyAssetsResponse = await command('Runtime.evaluate', {
+    expression: `(async () => {
+      if (window.lenis) window.lenis.stop();
+      const images = [...document.images];
+      const step = Math.max(360, Math.floor(innerHeight * 0.65));
+      const maxScroll = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+      for (let top = 0; top <= maxScroll; top += step) {
+        window.scrollTo({ top, behavior: 'instant' });
+        window.ScrollTrigger?.update(true);
+        await new Promise(resolve => setTimeout(resolve, 110));
+      }
+      window.scrollTo({ top: maxScroll, behavior: 'instant' });
+      window.ScrollTrigger?.update(true);
+      await new Promise(resolve => setTimeout(resolve, 1400));
+      return {
+        loaded: images.filter(image => image.complete && image.naturalWidth > 0).length,
+        total: images.length,
+        broken: images.filter(image => image.complete && !image.naturalWidth).map(image => image.getAttribute('src')),
+        pending: images.filter(image => !image.complete).map(image => image.getAttribute('src'))
+      };
+    })()`,
+    awaitPromise: true,
+    returnByValue: true,
+  });
+  const lazyAssets = lazyAssetsResponse.result.value;
   await command('Runtime.evaluate', { expression: 'window.scrollTo({ top: 0, behavior: "instant" })' });
   await sleep(300);
   await command('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
@@ -268,12 +299,15 @@ try {
   });
   const reducedLayout = reducedLayoutResponse.result.value;
 
-  const result = { desktop, mobile, heroProgress, scrollCheck, mobileScrollCheck, formCheck, reduced, reducedLayout, runtime: observed, browserWarnings: stderr.split(/\\r?\\n/).filter((line) => /net::ERR_|Uncaught|JavaScript error/i.test(line)).slice(-15) };
+  const result = { desktop, mobile, heroProgress, scrollCheck, lazyAssets, mobileScrollCheck, formCheck, reduced, reducedLayout, runtime: observed, browserWarnings: stderr.split(/\\r?\\n/).filter((line) => /net::ERR_|Uncaught|JavaScript error/i.test(line)).slice(-15) };
   console.log(JSON.stringify(result, null, 2));
 
   const failures = [];
   for (const [name, metrics] of [['desktop', desktop], ['mobile', mobile]]) {
     if (!metrics.title.includes('The Glass Pavilion')) failures.push(`${name}: wrong page title`);
+    if (metrics.startup.overlayPresent) failures.push(`${name}: preload overlay remained after startup readiness`);
+    if (!metrics.startup.readyClass) failures.push(`${name}: startup readiness signal was not dispatched`);
+    if (!metrics.startup.posterCached) failures.push(`${name}: hero poster was not preloaded and decoded`);
     if (!metrics.motion.gsap || !metrics.motion.scrollTrigger || !metrics.motion.lenis || !metrics.motion.splitType) failures.push(`${name}: motion dependency missing`);
     if (!metrics.fonts.loadedFaces.some((font) => font.family.replace(/["\']/g, '') === 'Cormorant Garamond') ||
         !metrics.fonts.loadedFaces.some((font) => font.family.replace(/["\']/g, '') === 'Jost') ||
@@ -282,6 +316,7 @@ try {
     if (metrics.externalResources.length) failures.push(`${name}: unexpected remote runtime resources ${metrics.externalResources.join(', ')}`);
     if (metrics.viewport.scrollWidth > metrics.viewport.clientWidth) failures.push(`${name}: document horizontal overflow`);
   }
+  if (lazyAssets.loaded !== lazyAssets.total || lazyAssets.broken.length || lazyAssets.pending.length) failures.push(`normal-motion scroll sweep did not finish all deferred images: ${JSON.stringify(lazyAssets)}`);
   if (heroProgress.requestedFrameCount <= 10) failures.push('hero frame sequence did not request more frames as scroll progressed');
   if (!heroProgress.canvasVisible || !heroProgress.canvasPixelSample || heroProgress.canvasPixelSample.every((value) => value === 0)) failures.push('hero canvas did not render a visible image while scrubbing');
   if (Math.abs(scrollCheck.firstRoomLeft) < 100) failures.push('desktop interior journey did not move horizontally with scroll');
