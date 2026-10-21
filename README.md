@@ -14,6 +14,12 @@ Open http://127.0.0.1:4173.
 
 To expose the server on a local network, use `HOST=0.0.0.0 PORT=4173 npm run start` only on a trusted network.
 
+## Startup preloading
+
+The startup overlay tracks readiness of the existing hero poster, the first 10 frames from the original 302-frame sequence, and the two local font families. When those essentials are ready, the overlay closes and the existing animation engine starts; the other hero frames keep using the existing progressive, bounded-cache loader. Below-the-fold photos use native lazy loading and asynchronous decoding.
+
+The displayed 100% means the startup gate has completed; it does **not** mean all 302 frames have downloaded. An 8-second safety timeout opens the page with whatever has loaded so a slow or stalled asset cannot hold the visitor at the overlay indefinitely. The original motion CSS, 302 frame assets and their resolution, canvas DPR limit, scroll timing and animation settings are unchanged.
+
 ## Verification
 
 Static and asset-integrity checks:
@@ -63,8 +69,9 @@ In Vercel, import the repository and keep the Root Directory at the repository r
 ## Project map
 
 - `index.html` — live page, brand metadata, visible copy, and page structure.
+- `src/preloader.js` and `src/preloader.css` — isolated critical-asset startup gate, progress indicator, timeout/fallback and loader-only styling.
 - `src/main.js` — Lenis/GSAP/ScrollTrigger/SplitType motion integration, progressive hero-frame loading with a bounded cache, reduced-motion handling, static-poster fallback and demo-only form status.
-- `src/style.css` — existing page styling, responsive layout and motion-fallback layout.
+- `src/style.css` — existing page styling, responsive layout and motion-fallback layout; unchanged by preload work.
 - `public/images/` — the 12 collected JPEG images/backgrounds.
 - `public/frames/` — the 302 collected WebP hero frames.
 - `asset-fetch-manifest.tsv` — file size, MIME type and SHA-256 manifest for collected media.

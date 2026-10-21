@@ -36,7 +36,7 @@ if (lenis) {
 }
 
 /* ---- 2 · HERO intro + parallax ---- */
-window.addEventListener('load', () => {
+window.addEventListener('kaven:preload-ready', () => {
   // Keep the page readable if animation libraries are unavailable or the visitor
   // has requested reduced motion. The static poster is drawn into the canvas.
   if (!motionLibrariesReady || prefersReducedMotion) {
@@ -87,9 +87,14 @@ function initHeroCanvas(staticOnly = false) {
   };
 
   if (staticOnly) {
-    const poster = new Image();
-    poster.onload = () => drawCover(poster);
-    poster.src = 'public/images/av-01-hero-exterior-dusk.jpg';
+    const preloadedPoster = window.KavenPreloader?.getPoster();
+    const poster = preloadedPoster || new Image();
+    if (preloadedPoster) {
+      drawCover(preloadedPoster);
+    } else {
+      poster.onload = () => drawCover(poster);
+      poster.src = 'public/images/av-01-hero-exterior-dusk.jpg';
+    }
     window.addEventListener('resize', () => {
       if (poster.complete && poster.naturalWidth) drawCover(poster);
     });
@@ -127,6 +132,11 @@ function initHeroCanvas(staticOnly = false) {
 
   function requestFrame(index) {
     if (index < 0 || index >= frameCount || images[index] || failedFrames.has(index)) return;
+    const preloadedImage = window.KavenPreloader?.getHeroFrame(index);
+    if (preloadedImage) {
+      images[index] = preloadedImage;
+      return;
+    }
     const img = new Image();
     images[index] = img;
     img.decoding = 'async';
@@ -210,6 +220,20 @@ function initHeroCanvas(staticOnly = false) {
   }
 
   resize();
+  if (lastDrawn === -1) {
+    const preloadedPoster = window.KavenPreloader?.getPoster();
+    if (preloadedPoster) {
+      drawCover(preloadedPoster);
+    } else {
+      const startupPoster = new Image();
+      startupPoster.decoding = 'async';
+      startupPoster.onload = () => {
+        // Keep the poster visible only until a real sequence frame has painted.
+        if (lastDrawn === -1) drawCover(startupPoster);
+      };
+      startupPoster.src = 'public/images/av-01-hero-exterior-dusk.jpg';
+    }
+  }
   window.addEventListener('resize', resize);
 
   // Tie frame index to scroll progress across the tall hero, pinning the viewport

@@ -6,13 +6,35 @@
   <title>The Glass Pavilion | Kaven &amp; Rowe — Private Residences</title>
   <meta name="description" content="Explore The Glass Pavilion in the Surrey Hills through its architecture, interiors and landscape. This concept page includes a demonstration-only viewing form." />
 
+  <!-- Priority assets for the first viewport; all other imagery loads progressively. -->
+  <link rel="preload" as="image" href="public/images/av-01-hero-exterior-dusk.jpg" fetchpriority="high" />
+  <link rel="preload" as="font" href="vendor/fonts/cormorant-garamond-roman.woff2" type="font/woff2" crossorigin />
+  <link rel="preload" as="font" href="vendor/fonts/jost-latin.woff2" type="font/woff2" crossorigin />
+
   <!-- Premium fonts: serif headings + clean sans body -->
   <link rel="stylesheet" href="vendor/fonts.css" />
 
   <link rel="stylesheet" href="vendor/lenis-css.css" />
   <link rel="stylesheet" href="src/style.css?v=15" />
+  <link rel="stylesheet" href="src/preloader.css?v=1" />
 </head>
 <body>
+  <!-- The temporary startup overlay is removed when essential assets are ready or the fallback timeout is reached. -->
+  <div id="kaven-preloader" role="status" aria-live="polite" aria-label="Preparing the Kaven &amp; Rowe experience">
+    <div class="kaven-preloader__inner">
+      <div class="kaven-preloader__wordmark">KAVEN <span>&amp;</span> ROWE</div>
+      <p class="kaven-preloader__message" id="kaven-preloader__message">Preparing experience</p>
+      <div class="kaven-preloader__track" id="kaven-preloader__track" role="progressbar" aria-label="Startup readiness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="kaven-preloader__bar" id="kaven-preloader__bar"></div>
+      </div>
+      <div class="kaven-preloader__meta">
+        <span>Essential assets</span>
+        <span id="kaven-preloader__percent">0%</span>
+      </div>
+    </div>
+  </div>
+  <noscript><style>#kaven-preloader { display: none !important; }</style></noscript>
+  <script src="src/preloader.js?v=1"></script>
 
   <!-- Top bar -->
   <header class="topbar">
@@ -56,7 +78,7 @@
   <!-- 2 · STORY / ORIGIN -->
   <section class="story" id="story">
     <div class="story-bg" data-parallax>
-      <img src="public/images/av-bg-landscape.jpg" alt="The estate landscape" />
+      <img loading="lazy" decoding="async" src="public/images/av-bg-landscape.jpg" alt="The estate landscape" />
     </div>
     <div class="story-inner">
       <p class="eyebrow">The Approach</p>
@@ -65,7 +87,7 @@
         The approach is deliberate: the landscape sets the pace, allowing the architecture to reveal itself.</p>
     </div>
     <figure class="story-figure" data-parallax-img>
-      <img src="public/images/av-02-approach-gate.jpg" alt="The private approach" />
+      <img loading="lazy" decoding="async" src="public/images/av-02-approach-gate.jpg" alt="The private approach" />
       <figcaption>The private approach · golden hour</figcaption>
     </figure>
   </section>
@@ -76,7 +98,7 @@
       <div class="anatomy-track">
 
         <article class="room">
-          <div class="room-img"><img src="public/images/av-03-entrance-door.jpg" alt="The entrance" /></div>
+          <div class="room-img"><img loading="lazy" decoding="async" src="public/images/av-03-entrance-door.jpg" alt="The entrance" /></div>
           <div class="room-text">
             <p class="num">01</p>
             <h3>The Threshold</h3>
@@ -85,7 +107,7 @@
         </article>
 
         <article class="room">
-          <div class="room-img"><img src="public/images/av-04-living-room.jpg" alt="The living space" /></div>
+          <div class="room-img"><img loading="lazy" decoding="async" src="public/images/av-04-living-room.jpg" alt="The living space" /></div>
           <div class="room-text">
             <p class="num">02</p>
             <h3>The Living Volume</h3>
@@ -94,7 +116,7 @@
         </article>
 
         <article class="room">
-          <div class="room-img"><img src="public/images/av-05-kitchen.jpg" alt="The kitchen" /></div>
+          <div class="room-img"><img loading="lazy" decoding="async" src="public/images/av-05-kitchen.jpg" alt="The kitchen" /></div>
           <div class="room-text">
             <p class="num">03</p>
             <h3>The Kitchen</h3>
@@ -103,7 +125,7 @@
         </article>
 
         <article class="room">
-          <div class="room-img"><img src="public/images/av-06-master-suite.jpg" alt="The master suite" /></div>
+          <div class="room-img"><img loading="lazy" decoding="async" src="public/images/av-06-master-suite.jpg" alt="The master suite" /></div>
           <div class="room-text">
             <p class="num">04</p>
             <h3>The Principal Suite</h3>
@@ -117,7 +139,7 @@
 
   <!-- 4 · THE REVEAL (full-bleed climax) -->
   <section class="reveal" id="reveal">
-    <img src="public/images/av-07-view-reveal.jpg" alt="The view" class="reveal-img" data-parallax-img />
+    <img loading="lazy" decoding="async" src="public/images/av-07-view-reveal.jpg" alt="The view" class="reveal-img" data-parallax-img />
     <div class="reveal-text">
       <h2 class="split-lines big light">And then,<br/>the horizon.</h2>
     </div>
@@ -126,22 +148,22 @@
   <!-- 5 · RITUAL / LIFESTYLE -->
   <section class="ritual" id="ritual">
     <figure class="ritual-tall" data-parallax-img>
-      <img src="public/images/av-09-staircase.jpg" alt="Sculptural staircase" />
+      <img loading="lazy" decoding="async" src="public/images/av-09-staircase.jpg" alt="Sculptural staircase" />
     </figure>
     <div class="ritual-stack">
-      <figure data-parallax-img><img src="public/images/av-08-pool-dusk.jpg" alt="Infinity pool at dusk" /></figure>
+      <figure data-parallax-img><img loading="lazy" decoding="async" src="public/images/av-08-pool-dusk.jpg" alt="Infinity pool at dusk" /></figure>
       <div class="ritual-copy">
         <p class="eyebrow">The Day's End</p>
         <h2 class="split-lines">Where evenings<br/>become rituals.</h2>
         <p class="body split-lines">A heated infinity edge meets the horizon. Beyond it, the Surrey Hills settle into the last light of day.</p>
       </div>
-      <figure data-parallax-img><img src="public/images/av-11-lifestyle-couple.jpg" alt="Terrace living" /></figure>
+      <figure data-parallax-img><img loading="lazy" decoding="async" src="public/images/av-11-lifestyle-couple.jpg" alt="Terrace living" /></figure>
     </div>
   </section>
 
   <!-- 6 · SPECIFICATION / COLLECTION -->
   <section class="spec" id="spec">
-    <div class="spec-bg" data-parallax><img src="public/images/av-10-material-macro.jpg" alt="Material detail" /></div>
+    <div class="spec-bg" data-parallax><img loading="lazy" decoding="async" src="public/images/av-10-material-macro.jpg" alt="Material detail" /></div>
     <div class="spec-inner">
       <p class="eyebrow">The Specification</p>
       <h2 class="split-lines big">Every measure,<br/>considered.</h2>
@@ -181,6 +203,6 @@
   <script src="vendor/ScrollTrigger.js"></script>
   <script src="vendor/lenis.js"></script>
   <script src="vendor/split-type.js"></script>
-  <script src="src/main.js?v=15"></script>
+  <script src="src/main.js?v=16"></script>
 </body>
 </html>

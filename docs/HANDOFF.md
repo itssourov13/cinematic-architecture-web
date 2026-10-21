@@ -3,7 +3,7 @@
 ## Workspace and objective
 
 - **Workspace:** `/home/kali/gpt-workspace/cinematic-architecture-web`
-- **Current rebrand branch:** `feat/kaven-rowe-brand-copy`
+- **Current implementation branch:** `feat/preload-boot`
 - **Featured property:** The Glass Pavilion
 - **Concept brand:** Kaven & Rowe
 - **Implementation:** Static HTML, CSS and JavaScript; no framework migration or npm dependency installation is needed.
@@ -12,9 +12,10 @@ The purpose of the rebrand is to make naming, metadata and property writing feel
 
 ## Active entry points
 
-- `index.html` — runnable HTML, title/description metadata, brand marks, property copy and demo viewing form.
-- `src/main.js` — Lenis, GSAP, ScrollTrigger and SplitType integration; bounded progressive hero-frame loading; static hero fallback; reduced-motion handling; demonstration-only form status.
-- `src/style.css` — existing visual styling and responsive/fallback layouts.
+- `index.html` — runnable HTML, title/description metadata, brand marks, property copy, demo viewing form and critical asset hints/startup overlay markup.
+- `src/preloader.js` and `src/preloader.css` — isolated preloader: hero poster, first ten original frames and local fonts; progress gate, 8-second safety timeout and loader-only styles.
+- `src/main.js` — Lenis, GSAP, ScrollTrigger and SplitType integration; bounded progressive hero-frame loading; static hero fallback; reduced-motion handling; demonstration-only form status. Motion timings/settings and frame canvas resolution are unchanged.
+- `src/style.css` — existing visual styling and responsive/fallback layouts; unchanged by preload work.
 - `public/images/` and `public/frames/` — collected photographic assets and 302-frame sequence.
 - `vendor/` — self-hosted motion libraries, font files and third-party notices.
 - `recovered/`, root-level `main.js`/`style.css` — reference baselines, not active entry points.
@@ -53,6 +54,10 @@ npm run browser:fallback
 ```
 
 These cover desktop/mobile scroll behaviour, reduced motion, local assets/fonts, the form's honest demo state, runtime exceptions, horizontal overflow, and operation without GSAP/ScrollTrigger. Review `docs/VERIFICATION.md` for the latest dated results; do not reuse old test counts as new results without rerunning the checks.
+
+## Startup preload scope
+
+The preloader's progress covers only the startup gate: one hero poster, ten already-existing sequence frames and two locally served font families. The page may open before optional later frames finish downloading; 100% is not a claim that all 302 frames are cached. On an 8-second timeout it releases the overlay and the original progressive frame loader continues. The 302 frame assets, their resolution, `src/style.css`, the canvas DPR cap, animation sequence and scroll timings are not modified by this change. The normal and dependency-fallback browser checks also verify that all 11 content photos load as the visitor reaches them.
 
 ## Vercel static deployment
 
