@@ -2,42 +2,58 @@
 
 **Updated:** 2026-10-21
 **Workspace:** `/home/kali/gpt-workspace/cinematic-architecture-web`
-**Branch:** `feat/kaven-rowe-brand-copy`
+**Branch:** `feat/vercel-static-deployment`
 
-## Latest result
+## Latest verification result
 
-All checks run after the brand and copy refresh passed.
+All local checks passed after preparing the Vercel static deployment output.
 
 | Check | Result | Evidence |
 |---|---|---|
-| `npm run check` | **13 passed, 0 failed** | JavaScript syntax, navigation, brand/copy contract, local references, asset integrity and recovered baseline hashes |
-| `npm run browser:smoke` | **Passed** | Desktop 1440×1000, mobile 390×844, normal motion, reduced motion, form demo state and scroll interactions |
-| `npm run browser:fallback` | **Passed** | GSAP and ScrollTrigger intentionally blocked; static poster and readable content retained |
-| `git diff --check` | Passed | No whitespace errors (checked during final review) |
+| `npm run check` | **14 passed, 0 failed** | JavaScript syntax, source paths, branding, Vercel configuration, asset integrity and recovered baseline hashes |
+| `npm run check:deployment` | **Passed** | Clean build and deployment-output smoke |
+| `SITE_URL=http://127.0.0.1:4174 npm run browser:smoke` | **Passed** | Chromium test against `dist/`: desktop, mobile, reduced motion, scrolling, fonts and form status |
+| `SITE_URL=http://127.0.0.1:4174 npm run browser:fallback` | **Passed** | Built output still works when GSAP and ScrollTrigger are blocked |
+| `git diff --check` | **Passed** | No whitespace errors |
 
-### Browser details
+## Deployment artifact
 
-- The page title resolves to `The Glass Pavilion | Kaven & Rowe — Private Residences`; the primary heading remains **The Glass Pavilion**.
-- Desktop and mobile document widths matched the viewport (1440/1440 and 390/390). The four-room horizontal sequence behaved as expected in the normal run; all four rooms became vertically readable in reduced-motion and fallback modes.
-- All 11 content images observed by the browser loaded; no broken images, failed local requests, unexpected external runtime resources, JavaScript exceptions or console errors were reported.
-- The self-hosted Cormorant Garamond and Jost font faces loaded.
-- Reduced-motion preference was honoured and Lenis was inactive.
-- The viewing form still displays its explicit demo-only message and does not send or persist form data.
+The build command is `npm run build` (`node scripts/build-static.mjs`). Vercel's root `vercel.json` pins Framework Preset to Other/no framework detection, Build Command to `npm run build`, and Output Directory to `dist`.
+
+Latest clean artifact smoke results:
+
+- Output: `dist/`
+- Files: **332**
+- Total size: **23,628,320 bytes** (~23.6 MB)
+- HTML runtime references checked: **19**
+- CSS/font stylesheets checked: **3**
+- Collected JPEG images: **12**
+- Hero WebP frames: **302**
+- Repository-only entries explicitly checked as excluded: **10** (`docs`, `tests`, `scripts`, `recovered`, Git metadata, source-level baselines, package/config files and asset manifest)
+
+The build copies only `index.html`, `public/`, `src/` and `vendor/`. CSS/font URL references and the local HTML runtime paths are verified before the smoke command passes. The generated `dist/` folder is Git-ignored and must not be committed.
+
+## Built-output browser details
+
+- Title and primary heading reflect **The Glass Pavilion / Kaven & Rowe**.
+- Desktop viewport: 1440×1000; document width stayed 1440.
+- Mobile viewport: 390×844; document width stayed 390.
+- All observed content images loaded; no broken image, failed local request, console error, uncaught exception or unexpected external runtime resource was reported.
+- Self-hosted Cormorant Garamond and Jost loaded from `dist/vendor/`.
+- Reduced motion was honoured; Lenis stayed inactive and the four interior panels became vertically readable.
+- Fallback browser check intentionally blocked GSAP and ScrollTrigger; the static hero poster and all four readable interior panels remained available.
+- The viewing form retains its demo-only message and does not send/persist form details.
 
 ## Preservation checks
 
-The static suite passed the checks for the 314-entry asset manifest, all 302 WebP frames, all 12 JPEG files/dimensions, frame resolution, bounded frame-cache invariants, and the SHA-256 values of the preserved recovered baselines. The brand change did not alter media paths or files, the asset manifest, CSS, motion implementation or recovered baseline files.
-
-Expected scope of the source change: `index.html`, `package.json`, `scripts/serve.mjs`, `tests/smoke.test.mjs`, `README.md`, `docs/HANDOFF.md`, this record and `docs/BRAND-AND-COPY.md`.
-
-Browser smoke scripts wrote verification screenshots to `/home/kali/evidence/`; these are test artifacts outside the Git working tree, not changes to the project's media collection.
+Static tests continue to pass for the 314-entry manifest, all 302 WebP frames, all 12 JPEG assets/dimensions, frame resolution and bounded-cache behaviour, and SHA-256 hashes of the preserved recovered baselines. Deployment prep did not modify the actual media files/paths, active CSS, animation source, or recovered original baselines.
 
 ## Known boundaries
 
-- No production deployment was attempted or verified in this run.
+- **A live Vercel deployment was not triggered or verified.** The build artifact and browser behaviour were tested locally only. A Preview Deployment is still required to validate Vercel's effective settings, deployed response headers, actual edge delivery and the target production domain.
+- No database or environment variables are required by the current static page.
 - The viewing form is a front-end demonstration; it does not submit or persist names/emails.
-- The **Kaven & Rowe** name is a working concept identity. Public-web screening did not surface a clear same-name real-estate brand in the sampled results, but no formal company-registry or trademark clearance was performed. See `BRAND-AND-COPY.md`.
-- These checks confirm behaviour and integrity; they do not constitute a fresh pixel-by-pixel comparison against the original live site.
+- The **Kaven & Rowe** name is a working concept identity and has not received formal trademark/legal clearance. See `BRAND-AND-COPY.md`.
 
 ## Recovered baseline hashes
 

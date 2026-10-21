@@ -3,7 +3,12 @@ import { createReadStream, existsSync, statSync } from 'node:fs';
 import { extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
+const projectRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
+const serveDist = process.env.SERVE_DIST === '1';
+const root = serveDist ? resolve(projectRoot, 'dist') : projectRoot;
+if (serveDist && !existsSync(resolve(root, 'index.html'))) {
+  throw new Error('dist/index.html is missing. Run npm run build before serving the deployment output.');
+}
 const host = process.env.HOST || '127.0.0.1';
 const port = Number.parseInt(process.env.PORT || '4173', 10);
 const mimeTypes = new Map([
