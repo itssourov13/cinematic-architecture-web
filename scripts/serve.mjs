@@ -84,6 +84,6 @@ const server = createServer((req, res) => {
 });
 
 server.listen(port, host, () => {
-  console.log(`Glass Pavilion running at http://${host}:${port}`);
+  console.log(`Kaven & Rowe · The Glass Pavilion running at http://${host}:${port}`);
   console.log(`Serving static files from ${root}`);
 });

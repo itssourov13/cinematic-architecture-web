@@ -1,46 +1,62 @@
-# The Glass Pavilion — reconstruction
+# The Glass Pavilion — Kaven & Rowe
 
-A static, fidelity-first reconstruction of the recovered **Ashworth & Vane — The Glass Pavilion** page.
+A cinematic, static architectural-property experience, refreshed with the **Kaven & Rowe** concept identity. **The Glass Pavilion** remains the featured residence. The original composition, photography, 302-frame hero sequence, visual styling and motion behaviour are intentionally preserved.
 
 ## Run locally
 
-Requires Node.js 20+; no npm packages need to be installed.
+Requires Node.js 20 or newer. No package installation is needed for the static site.
 
 ```sh
 npm run start
 ```
 
-Open `http://127.0.0.1:4173`.
+Open http://127.0.0.1:4173.
 
-To expose it on the local network, run `HOST=0.0.0.0 PORT=4173 npm run start`. Only do this on a trusted network.
+To expose the server on a local network, use `HOST=0.0.0.0 PORT=4173 npm run start` only on a trusted network.
 
-## Checks
+## Verification
+
+Static and asset-integrity checks:
 
 ```sh
 npm run check
 ```
 
-The tests verify local entry points, recovered baseline hashes, every collected-asset hash/size in the 314-entry manifest, all 302 WebP frames, the 12 JPEGs, vendored fonts, and JavaScript syntax. For real-browser checks, start the server in one terminal and run `npm run browser:smoke` and `npm run browser:fallback` in another; Chromium is required. These checks exercise desktop/mobile scrolling, reduced motion, the demo form, static-poster fallback with GSAP/ScrollTrigger unavailable, local asset loads, and horizontal overflow. Screenshots are saved under the workspace `evidence/` directory.
+With Chromium available, start the server in one terminal and run these in another:
 
-## Recovered vs. runnable files
+```sh
+npm run browser:smoke
+npm run browser:fallback
+```
 
-- `index.html`, `src/main.js`, and `src/style.css` are the runnable entry points.
-- `recovered/index.html`, `recovered/main.js`, and `recovered/style.css` preserve the original recovered baseline for forensic comparison. Root-level `main.js` and `style.css` are also left unchanged.
-- `public/images/` and `public/frames/` contain media collected from the publicly served live asset paths.
-- `asset-fetch-manifest.tsv` records every asset response, byte size, content type, and SHA-256 hash.
-- `scripts/fetch-assets.py` re-fetches the live public assets via an image proxy at quality 85 to improve fidelity over the proxy default. The proxy re-encodes images, so recorded hashes are hashes of collected output—not byte-for-byte origin hashes.
-- The live references were GSAP 3.12.5, ScrollTrigger 3.12.5, Lenis 1.1.13, SplitType 0.3.4, Cormorant Garamond, and Jost. These libraries and the Latin font subsets are now stored under `vendor/`, eliminating script/font CDN requests at runtime. Third-party notices and font licenses are in `vendor/THIRD-PARTY-NOTICES.md`.
+The browser tests cover desktop/mobile rendering, hero frame scrubbing, horizontal interior movement, reduced motion, the demo viewing form, local assets/fonts, runtime errors, horizontal overflow and the static poster fallback when GSAP/ScrollTrigger are unavailable. Browser scripts write screenshots to `/home/kali/evidence/`, outside the Git working tree.
 
-See [`docs/VERIFICATION.md`](docs/VERIFICATION.md) for the final test results, asset-integrity checks, live/local visual spot-check, and deployment caveats. The project handoff is in [`docs/HANDOFF.md`](docs/HANDOFF.md).
+## Project map
+
+- `index.html` — live page, brand metadata, visible copy, and page structure.
+- `src/main.js` — Lenis/GSAP/ScrollTrigger/SplitType motion integration, progressive hero-frame loading with a bounded cache, reduced-motion handling, static-poster fallback and demo-only form status.
+- `src/style.css` — existing page styling, responsive layout and motion-fallback layout.
+- `public/images/` — the 12 collected JPEG images/backgrounds.
+- `public/frames/` — the 302 collected WebP hero frames.
+- `asset-fetch-manifest.tsv` — file size, MIME type and SHA-256 manifest for collected media.
+- `vendor/` — locally served animation libraries, font assets, notices and licenses; no runtime CDN dependency is required.
+- `recovered/` — preserved recovered baseline files.
+- Root-level `main.js` and `style.css` — original baseline copies; not the active motion/style entry points.
+- `docs/BRAND-AND-COPY.md` — brand decision, copy principles and public-web naming-screen notes.
+- `docs/HANDOFF.md` — current workspace, implementation boundaries and handoff instructions.
+- `docs/VERIFICATION.md` — dated verification record and known limitations.
+
+## Content and behaviour boundaries
+
+- The updated writing keeps the existing property name, room sequence, measurements and stated property facts intact; no new price, dimensions, services or real-world business contact details have been invented.
+- The viewing form is a **demonstration only**. It does not send or persist names/emails, and its confirmation text explicitly says no appointment was requested.
+- Branding/copy work does not require changing media, asset paths, CSS/layout, animation logic or recovered baselines.
+- The original concept/build attribution remains visible in the footer.
+
+## Media and recovery safeguards
+
+The manifest tracks 314 collected outputs: 12 photographs/backgrounds and 302 hero frames. Proxy-collected images were re-encoded at quality 85; manifest hashes describe the collected local outputs, not byte-for-byte origin downloads. Treat `recovered/`, root-level baseline copies and the asset manifest as reference material—do not rewrite them during brand/content updates.
 
 ## License
 
-The root [`LICENSE`](LICENSE) contains the MIT License for original project-authored implementation code and documentation only. Recovered website material, media, and third-party vendor assets are excluded from that grant and retain their applicable rights/licenses; see the scope note in `LICENSE` and `vendor/THIRD-PARTY-NOTICES.md`.
-
-## Production notes
-
-- The original English content, luxury-dark palette, layout sections, horizontal interior sequence, pinned hero, captions, parallax, counters, and footer were retained.
-- Frame loading is progressive and bounded: nearby frames are requested as the scroll advances, and distant `Image` sources are released instead of retaining decoded buffers for the entire 302-frame sequence.
-- A static hero poster is drawn if reduced motion is preferred or animation libraries fail to load.
-- The appointment form is a visual demo and does **not** transmit or store names/emails. Connect a real backend before presenting it as a live lead-generation form.
-- Deploy the project directory as a static site with `index.html` at the web root; retain the `src/` and `public/` paths.
+The root `LICENSE` applies only to original project-authored code and documentation within its stated scope. Recovered website material, media and third-party assets are excluded and remain subject to their respective rights and licenses. Read `vendor/THIRD-PARTY-NOTICES.md` before redistribution or commercial use.
